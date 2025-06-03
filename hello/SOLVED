@@ -1,0 +1,10 @@
+SOLVED: Bare-Metal Project Implementation and Improvements
+This project extended a basic "Hello World" bare-metal setup to include keyboard input and proper screen output.
+
+1. Keyboard Input Implementation
+We added a new function, key_reader, to libc.S. This function uses the BIOS interrupt int 0x16 (function 0x00) to wait for and capture a key press. The ASCII code of the pressed key is returned.
+
+In main.c, we modified the code to use key_reader in a continuous loop. To print the character using printf (which expects a null-terminated string), we used a char array of size 2 (key_pressed[2]). The read key goes into key_pressed[0], and a null terminator (\0) is added at key_pressed[1]. The loop stops when the 'q' key is pressed.
+
+2. Makefile Modifications
+We updated the Makefile to allow our C code to compile in this bare-metal environment. The key change was adding the -fno-stack-protector flag to the gcc command for main.c. This flag disables stack protection checks, which are standard GCC security features but are not supported in our minimal setup. Disabling this fixed the "undefined reference" error during linking, allowing the program to build successfully.

@@ -6,16 +6,17 @@
 #  This file is a derivative of SYSeg (https://gitlab.com/monaco/syseg)
 #  and includes modifications made by the following author(s):
 #  ViniMacedo <vii-30@usp.br>
+#  Lucas Pereira <pereira_lucas@usp.br>
 
 CC=gcc
 MAKE=make
 
-this: hello.bin
+this: key_tester.bin
 
-this: hello.bin
+this: key_tester.bin
 
 main.o : main.c
-	gcc -m16 -O1 -Wall -fno-pic -fno-asynchronous-unwind-tables -c $< -fno-builtin -nostdinc -I. -o $@ 
+	gcc -m16 -O1 -Wall -fno-pic -fno-asynchronous-unwind-tables -fno-stack-protector -c $< -fno-builtin -nostdinc -I. -o $@ 
 
 libc.o : libc.S
 	gcc -m16 -O1 -Wall -fno-pic -fno-asynchronous-unwind-tables -c $< -fno-builtin -o $@
@@ -23,8 +24,8 @@ libc.o : libc.S
 crt0.o : crt0.S
 	gcc -m16 -O1 -Wall -fno-pic -fno-asynchronous-unwind-tables -c $< -fno-builtin -o $@
 
-hello.bin : main.o libc.o | crt0.o hello.ld
-	gcc -m16 $^ -nostartfiles -nostdlib -T hello.ld -orphan-handling=discard -o $@
+keyTester.bin : main.o libc.o | crt0.o key_tester.ld
+	gcc -m16 $^ -nostartfiles -nostdlib -T key_tester.ld -orphan-handling=discard -o $@
 
 
 

@@ -10,6 +10,7 @@
 
 	.code16gcc
 	.global printf
+        .global key_reader
 
 	.section .text
 	
@@ -31,5 +32,7 @@ end:
         ret
 
 
-
-
+key_reader:
+        mov $0x00, %ah
+        int $0x16
+        ret
